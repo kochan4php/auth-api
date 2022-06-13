@@ -150,7 +150,7 @@ const generateAccessToken = async (req, res) => {
 };
 
 const createAccessToken = (payload) =>
-  jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "2m" });
+  jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "60m" });
 
 const createRefreshToken = (payload) =>
   jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "1d" });
