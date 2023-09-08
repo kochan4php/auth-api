@@ -14,10 +14,11 @@ const getUsers = async (_, res) => {
 const register = async (req, res) => {
     try {
         const { name, email, password, confirmPassword } = req.body;
+
         if (password !== confirmPassword) return res.status(400).json({ message: 'Password tidak sesuai!' });
 
-        const users = await User.find({});
         const userExist = await User.find((user) => user.email === email);
+
         if (userExist) return res.status(400).json({ message: 'Email sudah terdaftar!' });
 
         const salt = await bcrypt.genSalt(10);
