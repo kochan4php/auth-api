@@ -14,6 +14,7 @@
         "docker:db:dev:up": "pnpm docker:db:dev:down && docker compose -f ./docker/docker-compose.yml up -d",
         "docker:db:dev:down": "docker compose -f ./docker/docker-compose.yml down",
         "docker:image:rm": "docker image rm auth-api mongo",
+        "docker:volume:rm": "docker volume rm mongodb-data mongo-dev",
         "docker:up": "pnpm docker:down && docker-compose up -d",
         "docker:down": "docker-compose down",
         "prepare": "husky install"

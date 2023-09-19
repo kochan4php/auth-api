@@ -1,6 +1,6 @@
 version: '3.8'
 
-name: expressts_db_dev
+name: mongo_dev
 
 services:
     mongodb:
@@ -12,7 +12,7 @@ services:
         ports:
             - 27018:27017
         volumes:
-            - mongo-expressts:/data/db
+            - mongo-dev:/data/db
         deploy:
             resources:
                 limits:
@@ -38,5 +38,5 @@ services:
                     memory: 512M
 
 volumes:
-    mongo-expressts:
-        name: mongo-expressts
+    mongo-dev:
+        name: mongo-dev
