@@ -9,6 +9,8 @@
         "dev": "nodemon ./src/index.js",
         "lint": "eslint ./src/**/*.js",
         "lint:fix": "eslint ./src/**/*.js --fix",
+        "prettier:check": "prettier --check .",
+        "prettier:fix": "prettier --write .",
         "prepare": "husky install"
     },
     "keywords": [],
@@ -30,6 +32,7 @@
         "eslint-plugin-n": "^16.1.0",
         "eslint-plugin-promise": "^6.1.1",
         "husky": "^8.0.3",
-        "nodemon": "^3.0.1"
+        "nodemon": "^3.0.1",
+        "prettier": "^3.0.3"
     }
 }

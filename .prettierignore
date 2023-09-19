@@ -1,0 +1,6 @@
+*.yaml
+*.yml
+.husky
+.md
+node_modules
+.gitignore
