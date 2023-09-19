@@ -11,6 +11,9 @@
         "lint:fix": "eslint ./src/**/*.js --fix",
         "prettier:check": "prettier --check .",
         "prettier:fix": "prettier --write .",
+        "docker:image:rm": "docker image rm auth-api mongo",
+        "docker:down": "docker-compose down",
+        "docker:up": "pnpm docker:down && docker-compose up -d",
         "prepare": "husky install"
     },
     "keywords": [],

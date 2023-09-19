@@ -1,0 +1,8 @@
+node_modules
+build
+.env.example
+dockerfiles
+.prettierignore
+.prettierrc
+*.md
+.husky
