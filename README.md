@@ -18,6 +18,9 @@ sudo npm install -g pnpm
 # running mongodb docker image for development
 pnpm docker:db:dev:up
 
+# running mongodb docker image for development
+pnpm docker:db:dev:up
+
 # install dependencies
 pnpm install
 
@@ -42,6 +45,9 @@ cd auth-api
 npm install -g pnpm
 # In linux and mac :
 sudo npm install -g pnpm
+
+# running mongodb docker image for development
+pnpm docker:db:dev:up
 
 # install dependencies
 pnpm install
