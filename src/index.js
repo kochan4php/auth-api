@@ -15,8 +15,10 @@ import user from './routes/auth.js';
 
     app.use(cors(corsConfig()));
     app.use(cookieParser());
+    app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
-    app.use(user);
+
+    app.use('/api/auth', user);
 
     app.listen(PORT, () => console.log(`Server is connected on port ${PORT}`));
 })();

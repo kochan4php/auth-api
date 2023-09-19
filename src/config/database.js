@@ -6,5 +6,6 @@ export default async function database() {
         console.log(`MongoDB Connected on ${con.connection.host}`);
     } catch (error) {
         console.log(error);
+        process.exit(1);
     }
 }

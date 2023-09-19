@@ -2,16 +2,16 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 
-const getUsers = async (_, res) => {
+async function getUsers(_, res) {
     try {
         const users = await User.find({});
         res.status(200).json({ message: 'Users fetched successfully', users });
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
-};
+}
 
-const register = async (req, res) => {
+async function register(req, res) {
     try {
         const { name, email, password, confirmPassword } = req.body;
 
@@ -24,17 +24,15 @@ const register = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
 
-        User.create({ name, email, password: hashPassword }, (err, user) => {
-            return err
-                ? res.status(400).json({ message: 'Gagal registrasi, silahkan coba kembali' })
-                : res.status(201).json({ message: 'Registrasi berhasil, silahkan login', user });
-        });
+        await User.create({ name, email, password: hashPassword });
+
+        res.status(201).json({ message: 'Registrasi berhasil, silahkan login' });
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
-};
+}
 
-const login = async (req, res) => {
+async function login(req, res) {
     try {
         const { email, password } = req.body;
 
@@ -46,22 +44,9 @@ const login = async (req, res) => {
 
         if (!matchPassword) return res.status(400).json({ message: 'Password salah!' });
 
-        const accessToken = createAccessToken({
-            id: user._id,
-            name: user.name,
-            email
-        });
-
-        const refreshToken = createRefreshToken({
-            id: user._id,
-            name: user.name,
-            email
-        });
-
-        res.cookie('refreshToken', refreshToken, {
-            httpOnly: true,
-            maxAge: 1000 * 60 * 60 * 24
-        });
+        const accessToken = createAccessToken({ id: user._id, name: user.name, email });
+        const refreshToken = createRefreshToken({ id: user._id, name: user.name, email });
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
 
         user.refreshToken = refreshToken;
         await user.save();
@@ -70,9 +55,9 @@ const login = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
-};
+}
 
-const logout = async (req, res) => {
+async function logout(req, res) {
     try {
         const refreshToken = req.cookies.refreshToken;
 
@@ -90,9 +75,9 @@ const logout = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
-};
+}
 
-const generateAccessToken = async (req, res) => {
+async function generateAccessToken(req, res) {
     try {
         const refreshToken = req.cookies.refreshToken;
 
@@ -104,6 +89,7 @@ const generateAccessToken = async (req, res) => {
 
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decode) => {
             if (err) return res.sendStatus(403);
+
             const { email, name, id } = user;
             const accessToken = createAccessToken({ email, name, id });
             return res.status(200).json({ accessToken });
@@ -111,10 +97,14 @@ const generateAccessToken = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
-};
+}
 
-const createAccessToken = (payload) => jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '60m' });
+function createAccessToken(payload) {
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '60m' });
+}
 
-const createRefreshToken = (payload) => jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+function createRefreshToken(payload) {
+    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+}
 
 export default { getUsers, register, login, logout, generateAccessToken };
