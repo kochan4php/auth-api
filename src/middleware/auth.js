@@ -9,8 +9,7 @@ export default async function auth(req, res, next) {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decode) => {
             if (err) return res.status(403).json({ message: 'Token Expired, silahkan login lagi' });
 
-            const email = decode.email;
-            console.log(email);
+            req.user = decode;
             next();
         });
     } catch (error) {
