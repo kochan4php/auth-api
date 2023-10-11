@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-    auth-api:
-        container_name: auth-api
+    server-app:
+        container_name: server-app
         build:
             context: .
             dockerfile: ./dockerfiles/production/Dockerfile
@@ -10,14 +10,28 @@ services:
         restart: always
         ports:
             - 8000:8000
-        env_file: .env
+        healthcheck:
+            test:
+                [
+                    'CMD',
+                    'curl',
+                    '-f',
+                    'http://localhost:8000/api/health-check'
+                ]
+            interval: 30s
+            timeout: 30s
+            retries: 5
+            start_period: 5s
+        env_file: ./env/.env.production.local
         environment:
-            APP_PORT: 8000
-            MONGO_URI: mongodb://mongodb:27017/auth_db
-            ACCESS_TOKEN_SECRET: fklagasdklmkdamkandasmfkmakfkajakfdsajflkdsdfsdamflkf
-            REFRESH_TOKEN_SECRET: klsdfjlkaslzfjhafafhbaskfbakufbabhsdfcDJKABFASEDFBZLJH
+            PORT: 8000
+            MONGO_URI: mongodb://mongodb:27017/auth_api
+            ACCESS_TOKEN_SECRET: das9807asd908a90d8sa09d323
+            REFRESH_TOKEN_SECRET: c9sddc8s90cuscuj90ew8r09w3
+            SESSION_TOKEN_SECRET: das90d8sad7sa8d7as89d7asdsad
+            # TRUSTED_DOMAINS: http://localhost:4000
         networks:
-            - auth-api-network
+            - express-ts-starter-network
         depends_on:
             - mongodb
         deploy:
@@ -35,7 +49,7 @@ services:
         volumes:
             - mongodb-data:/data/db
         networks:
-            - auth-api-network
+            - express-ts-starter-network
         deploy:
             resources:
                 limits:
@@ -43,8 +57,8 @@ services:
                     memory: 512M
 
 networks:
-    auth-api-network:
-        name: auth-api-network
+    express-ts-starter-network:
+        name: express-ts-starter-network
         driver: bridge
 
 volumes:

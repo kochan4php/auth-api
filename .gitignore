@@ -1,2 +1,6 @@
-/node_modules
-.env
+node_modules
+dist
+env/.env.local
+env/.env.production*
+env/.env.staging
+env/.env.development

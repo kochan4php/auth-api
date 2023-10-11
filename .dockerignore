@@ -6,3 +6,4 @@ dockerfiles
 .prettierrc
 *.md
 .husky
+docker
